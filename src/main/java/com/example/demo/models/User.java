@@ -2,11 +2,20 @@ package com.example.demo.models;
 
 import com.example.demo.aspects.Loggable;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
+@Setter
 @Getter
+@ToString
 @Component
 public class User {
+
+    private UUID id;
+
     private String name;
 
     private String email;

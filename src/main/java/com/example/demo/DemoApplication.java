@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.util.UUID;
+
 
 @SpringBootApplication
 public class DemoApplication {
@@ -17,10 +19,29 @@ public class DemoApplication {
         final ConfigurableApplicationContext context = app.run(args);
 //        final ConfigurableApplicationContext context = SpringApplication.run(DemoApplication.class, args);
 
-        final UserService bean = context.getBean(UserService.class);
-        System.out.println(bean.getUserDetails("12345"));
-        bean.updateUserDetails("12345", "54321");
-        bean.updateUserDetails(null, null);
+        final UserService service = context.getBean(UserService.class);
+//        aopExamples(context, service);
+        System.out.println("Get User by ID:");
+        System.out.println(service.findUserById(UUID.fromString("d6bc856f-4921-4b84-941e-5ef807ca519d")));
+        System.out.println("Get All Users:");
+        service.findAllUsers().forEach(System.out::println);
+        System.out.println("Update All User Emails:");
+        System.out.println("User was update - " + service.updateAllUserEmails("error@gmail.com"));
+        System.out.println("Create User:");
+        final User user = new User();
+        user.setId(UUID.randomUUID());
+        user.setName("New User");
+        user.setEmail("new-email@gmail.com");
+        System.out.println("User was created - " + service.createUser(user));
+    }
+
+    private static void aopExamples(
+            final ConfigurableApplicationContext context,
+            final UserService service
+    ) {
+        System.out.println(service.getUserDetails("12345"));
+        service.updateUserDetails("12345", "54321");
+        service.updateUserDetails(null, null);
 
         System.out.println("~".repeat(10));
 
