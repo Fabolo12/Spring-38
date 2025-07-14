@@ -21,18 +21,31 @@ public class DemoApplication {
 
         final UserService service = context.getBean(UserService.class);
 //        aopExamples(context, service);
+
+        System.out.println("Create User:");
+        final User userWithId = service.createUser(create("New User", "email@.com"));
+        service.createUser(create("New User 2", null));
+        service.createUser(create("User 3", null));
+        System.out.println("User was created - " + userWithId.getId());
         System.out.println("Get User by ID:");
-        System.out.println(service.findUserById(UUID.fromString("d6bc856f-4921-4b84-941e-5ef807ca519d")));
+        System.out.println(service.findUserById(userWithId.getId()));
         System.out.println("Get All Users:");
         service.findAllUsers().forEach(System.out::println);
         System.out.println("Update All User Emails:");
         System.out.println("User was update - " + service.updateAllUserEmails("error@gmail.com"));
-        System.out.println("Create User:");
+        System.out.println("Get all by email:");
+        service.findAllByEmail("error@gmail.com").forEach(System.out::println);
+        System.out.println("Get all By name greater than 7:");
+        service.getByNameGreaterThan(7).forEach(System.out::println);
+        System.out.println("Get all with pageable:");
+        service.getWithSortAndPage(0, 2, "name", "asc").forEach(System.out::println);
+    }
+
+    private static User create(final String name, final String email) {
         final User user = new User();
-        user.setId(UUID.randomUUID());
-        user.setName("New User");
-        user.setEmail("new-email@gmail.com");
-        System.out.println("User was created - " + service.createUser(user));
+        user.setName(name);
+        user.setEmail(email);
+        return user;
     }
 
     private static void aopExamples(

@@ -1,0 +1,9 @@
+CREATE SEQUENCE IF NOT EXISTS task_sequence START WITH 16 INCREMENT BY 16;
+
+CREATE TABLE IF NOT EXISTS task
+(
+    id          BIGINT NOT NULL,
+    description VARCHAR(100),
+    status      VARCHAR(11),
+    CONSTRAINT pk_task PRIMARY KEY (id)
+);
